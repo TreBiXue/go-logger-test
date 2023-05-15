@@ -52,6 +52,19 @@ func InitLogger() (Logger, error) {
 	var mode string
 	flag.StringVar(&mode, "mode", "dev", "mode flag")
 	flag.Parse()
+
+	fmt.Println("-------------------------------------")
+	fmt.Println(mode)
+	fmt.Println("-------------------------------------")
+
+	// 检查是否设置了 mode 环境变量，优先使用环境变量的值
+	if envMode := os.Getenv("mode"); envMode != "" {
+		mode = envMode
+	}
+	fmt.Println("++++++++++++++++++++++++++++++++++++++")
+	fmt.Println(mode)
+	fmt.Println("++++++++++++++++++++++++++++++++++++++")
+
 	if mode == "dev" {
 		fmt.Println("aaaaaaaaaaaaaa")
 		return initDevelopmentLogger()
