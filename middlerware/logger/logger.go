@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/logging"
 	"context"
 	"flag"
+	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
@@ -52,8 +53,10 @@ func InitLogger() (Logger, error) {
 	flag.StringVar(&mode, "mode", "dev", "mode flag")
 	flag.Parse()
 	if mode == "dev" {
+		fmt.Println("aaaaaaaaaaaaaa")
 		return initDevelopmentLogger()
 	} else {
+		fmt.Println("bbbbbbbbbbbbbbbbb")
 		return initProductionLogger()
 	}
 }
@@ -83,6 +86,7 @@ func initProductionLogger() (Logger, error) {
 	ctx := context.Background()
 	client, err := logging.NewClient(ctx, "horizontal-ally-385009")
 	if err != nil {
+		fmt.Println("ccccccccccccccccccc")
 		return nil, err
 	}
 
@@ -90,6 +94,7 @@ func initProductionLogger() (Logger, error) {
 
 	// Logs a basic entry.
 	loggingClient.Log(logging.Entry{Payload: "hello world"})
+	fmt.Println("hello world ddddddddddddddddddd")
 
 	return &GCPLogger{loggingClient}, nil
 }
