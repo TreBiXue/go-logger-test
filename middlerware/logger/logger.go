@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 )
 
+var rootDir string
+
 type Logger interface {
 	Info(msg string)
 	Error(msg string)
@@ -85,6 +87,9 @@ func initProductionLogger() (Logger, error) {
 	}
 
 	loggingClient := client.Logger("test-logger")
+
+	// Logs a basic entry.
+	loggingClient.Log(logging.Entry{Payload: "hello world"})
 
 	return &GCPLogger{loggingClient}, nil
 }
