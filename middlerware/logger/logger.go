@@ -4,7 +4,6 @@ import (
 	"cloud.google.com/go/logging"
 	"context"
 	"flag"
-	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
@@ -53,30 +52,21 @@ func InitLogger() (Logger, error) {
 	flag.StringVar(&mode, "mode", "dev", "mode flag")
 	flag.Parse()
 
-	fmt.Println("-------------------------------------")
-	fmt.Println(mode)
-	fmt.Println("-------------------------------------")
-
-	// 检查是否设置了 mode 环境变量，优先使用环境变量的值
+	// 优先取得环境变量
 	if envMode := os.Getenv("mode"); envMode != "" {
 		mode = envMode
 	}
-	fmt.Println("++++++++++++++++++++++++++++++++++++++")
-	fmt.Println(mode)
-	fmt.Println("++++++++++++++++++++++++++++++++++++++")
 
 	if mode == "dev" {
-		fmt.Println("aaaaaaaaaaaaaa")
 		return initDevelopmentLogger()
 	} else {
-		fmt.Println("bbbbbbbbbbbbbbbbb")
 		return initProductionLogger()
 	}
 }
 
 func initDevelopmentLogger() (Logger, error) {
 	// logger path
-	logFilePath := filepath.Join(".", "logger", "log.txt")
+	logFilePath := filepath.Join(".", "logger", "my-logger.log")
 	err := os.MkdirAll(filepath.Dir(logFilePath), os.ModePerm)
 	if err != nil {
 		return nil, err
@@ -99,15 +89,10 @@ func initProductionLogger() (Logger, error) {
 	ctx := context.Background()
 	client, err := logging.NewClient(ctx, "horizontal-ally-385009")
 	if err != nil {
-		fmt.Println("ccccccccccccccccccc")
 		return nil, err
 	}
 
-	loggingClient := client.Logger("test-logger")
-
-	// Logs a basic entry.
-	loggingClient.Log(logging.Entry{Payload: "hello world"})
-	fmt.Println("hello world ddddddddddddddddddd")
-
+	//创建名my-logger的日志记录器
+	loggingClient := client.Logger("my-logger")
 	return &GCPLogger{loggingClient}, nil
 }

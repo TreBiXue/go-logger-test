@@ -1,6 +1,6 @@
 FROM golang:1.19
 
-ENV MODE prod
+ENV mode prod
 
 COPY . /app
 WORKDIR /app

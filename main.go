@@ -21,10 +21,12 @@ func main() {
 	})
 
 	r.GET("/questions", func(c *gin.Context) {
-		logger.Info("hahahahahha")
+		logger.Info("Get API Start")
 		// 値を取得する
 		questins := model.GetAll()
+		logger.Error("This is an Error")
 		c.JSON(200, questins)
+		logger.Info("Get API End")
 	})
 	r.GET("/:tag/:num", func(c *gin.Context) {
 		tag := c.Param("tag")
